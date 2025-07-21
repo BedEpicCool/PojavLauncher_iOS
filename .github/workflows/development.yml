@@ -45,7 +45,7 @@ jobs:
         if: runner.os == 'Windows'
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
-        shell: pwsh
+        shell: powershell
         run: |
           Write-Host "before"
           Get-ChildItem -Force | ForEach-Object {
@@ -126,7 +126,7 @@ jobs:
 
       - name: Build for ${{ matrix.platform_name }} (Windows)
         if: runner.os == 'Windows'
-        shell: pwsh
+        shell: powershell
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
