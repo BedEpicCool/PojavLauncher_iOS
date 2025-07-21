@@ -72,9 +72,6 @@ jobs:
         run: echo "::set-output name=sha::$(git ls-remote https://github.com/PojavLauncherTeam/gl4es-114-extra refs/heads/master | grep -io '^\S*')"
         shell: bash
 
-      # Cache and build steps for gl4es skipped on Windows, because you had them conditionally disabled
-      # If you want to support Windows, you'd need to adjust those as well
-
       - name: Get JRE8
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -133,41 +130,40 @@ jobs:
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
         run: |
-          # Put your Windows build commands here, example placeholder:
           Write-Host "Building for platform $($Env:platform_name) on Windows runner"
-          # Replace with actual build commands or call scripts that are Windows compatible
+          # TODO: Add your Windows build commands here
 
       - name: Upload regular ipa (macOS)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}.ipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload regular tipa (macOS)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: net.kdt.pojavlauncher-${{ matrix.platform_name }}-trollstore.tipa
           path: artifacts/net.kdt.pojavlauncher-*-${{ matrix.platform_name }}-trollstore.tipa
 
       - name: Upload slimmed ipa (macOS)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}.ipa
           path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}.ipa
 
       - name: Upload slimmed tipa (macOS)
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: net.kdt.pojavlauncher.slimmed-${{ matrix.platform_name }}-trollstore.tipa
           path: artifacts/net.kdt.pojavlauncher.slimmed-*-${{ matrix.platform_name }}-trollstore.tipa
 
       - name: Upload PojavLauncher.dSYM (macOS only)
         if: runner.os == 'macOS' && matrix.platform_name == 'ios'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: PojavLauncher.dSYM
           path: artifacts/PojavLauncher.dSYM
