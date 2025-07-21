@@ -41,23 +41,18 @@ jobs:
           echo "after"
           ls -lah ./
 
-      - name: Remove work folders (Windows PowerShell)
+      - name: Remove work folders (Windows WSL)
         if: runner.os == 'Windows'
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
-        shell: powershell
+        shell: wsl
         run: |
-          Write-Host "before"
-          Get-ChildItem -Force | ForEach-Object {
-            try {
-              Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction Stop
-            } catch {
-              Write-Warning "Failed to remove $($_.FullName): $_"
-              exit 1
-            }
-          }
-          Write-Host "after"
-          Get-ChildItem -Force
+          echo "before"
+          ls -lah ./
+          echo $password | sudo -S rm -rf ./* || true
+          echo $password | sudo -S rm -rf ./.??* || true
+          echo "after"
+          ls -lah ./
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -124,7 +119,7 @@ jobs:
             gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
           fi
 
-      - name: Build for ${{ matrix.platform_name }} (Windows)
+      - name: Build for ${{ matrix.platform_name }} (Windows PowerShell)
         if: runner.os == 'Windows'
         shell: powershell
         env:
