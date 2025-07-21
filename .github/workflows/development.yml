@@ -23,7 +23,7 @@ jobs:
           - platform: 8
             platform_name: tvossimulator
     
-    runs-on: MacStadium
+    runs-on: self-hosted
     steps:
       - name: Remove work folders
         env:
@@ -138,7 +138,6 @@ jobs:
             # Build ipa only for everything else
             gmake -j$(sysctl -n hw.ncpu) dsym package PLATFORM=${{ matrix.platform }}
           fi
-
       - name: Upload regular ipa
         uses: actions/upload-artifact@main
         with:
