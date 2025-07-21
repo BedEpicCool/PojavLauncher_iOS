@@ -41,18 +41,18 @@ jobs:
           echo "after"
           ls -lah ./
 
-      - name: Remove work folders (Windows WSL)
+      - name: Remove work folders (Windows WSL via PowerShell)
         if: runner.os == 'Windows'
         env:
           password: ${{ secrets.ELLIE_MINI_SECRET }}
-        shell: wsl
+        shell: powershell
         run: |
-          echo "before"
-          ls -lah ./
-          echo $password | sudo -S rm -rf ./* || true
-          echo $password | sudo -S rm -rf ./.??* || true
-          echo "after"
-          ls -lah ./
+          Write-Host "before"
+          wsl ls -lah ./
+          wsl bash -c "echo $Env:password | sudo -S rm -rf ./* || true"
+          wsl bash -c "echo $Env:password | sudo -S rm -rf ./.??* || true"
+          Write-Host "after"
+          wsl ls -lah ./
 
       - name: Checkout repository
         uses: actions/checkout@v3
